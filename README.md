@@ -16,24 +16,37 @@ By analyzing 1,101 historical storms, this project represents each storm as a sm
 * **Features Used:** Time-stamped longitude, latitude, wind speed, and central pressure. Observations were filtered to include records after 1949 and standardized to UTC.
 
 ## Methodology
-The project employs a comprehensive Functional Data Analysis (FDA) framework:
+The project employs a comprehensive Functional Data Analysis (FDA) framework to model the continuous life cycles of storms:
 
 1. **Data Preprocessing & Smoothing:** * A 1D intensity index was constructed using Principal Component Analysis (PCA) on wind speed and central pressure (explaining 95.9% of the variance).
    * The longitudinal, latitudinal, and intensity components were smoothed using penalized B-splines and evaluated on a common uniform grid.
    * An elastic depth approach (square-root velocity framework) was utilized to identify and remove functional outliers.
+2. **Functional Principal Component Analysis (FPCA):** Decomposed the trajectory variation into orthogonal modes around the population mean to identify dominant patterns.
+3. **Function-on-Scalar Regression:** Examines how single-value storm characteristics (like starting location, season, and lifetime) shape the *entire* continuous intensity curve, rather than just a single peak value.
+4. **Concurrent Functional Regression:** Models the instantaneous, moment-by-moment relationship between a storm's physical movement and its intensity at that exact same time.
 
-2. **Functional Principal Component Analysis (FPCA):**
-   * FPCA decomposed the trajectory variation into orthogonal modes around the population mean.
-   * Over 90% of the variance is explained by just three dominant modes: **overall intensity magnitude**, **timing shift of the peak**, and **high-frequency oscillation**.
+## Key Findings
+Through the application of the above FDA models, the study uncovered the following empirical patterns:
 
-3. **Function-on-Scalar Regression**
-This method examines how single-value storm characteristics (like starting location, season, and lifetime) shape the *entire* continuous intensity curve, rather than just a single peak value.
-* Overall Magnitude: A storm's starting location and season heavily dictate its lifetime strength (e.g., storms forming further south/east are consistently stronger).
-* Peak Timing: Seasonality is the strongest driver of *when* a storm reaches its maximum intensity.
-* Fluctuations: Starting longitude and formation year influence rapid, short-term intensity changes.
+**1. Dominant Modes of Trajectory Variation**
+Over 90% of the variance in storm evolution is explained by just three dominant modes: overall intensity magnitude, timing shift of the peak, and high-frequency oscillation.
 
-4. **Concurrent Functional Regression**
-This approach models the instantaneous, moment-by-moment relationship between a storm's physical movement and its intensity at that exact same time. 
-* Early Stage: Spatial displacement has little to no measurable effect on intensity.
-* Mid-Life (Development): Moving northward strongly correlates with intensification, while moving eastward is linked to weakening.
-* Late Stage (Decay): As the storm recurves and dies down, further displacement in *either* direction (north or east) is associated with continued weakening.
+**2. Impact of Climatic and Environmental Factors**
+* **Overall Magnitude:** A storm's starting location and season heavily dictate its lifetime strength (e.g., storms forming further south/east are consistently stronger).
+* **Peak Timing:** Seasonality is the strongest driver of *when* a storm reaches its maximum intensity.
+* **Fluctuations:** Starting longitude and formation year influence rapid, short-term intensity changes.
+
+**3. Spatial-Intensity Dynamics over Time**
+* **Early Stage:** Spatial displacement has little to no measurable effect on intensity.
+* **Mid-Life (Development):** Moving northward strongly correlates with intensification, while moving eastward is linked to weakening.
+* **Late Stage (Decay):** As the storm recurves and dies down, further displacement in *either* direction (north or east) is associated with continued weakening.
+
+
+## Limitations & Future Work
+* **Smoothing Approximations:** Functional trajectories are smooth approximations by design and may attenuate highly localized, abrupt changes in intensity.
+* **Instantaneous Assumption:** The concurrent regression model assumes intensity depends only on instantaneous spatial displacement, omitting potential lagged or cumulative effects.
+* **Future Directions:** Future research could integrate physical atmospheric drivers (such as vertical wind shear or sea surface temperatures) directly into the functional regression frameworks to bridge statistical modeling with physical causations.
+
+## Citation / Contact
+If you use this code or methodology in your research, please refer to the original paper:
+> **Liu, R.** (Year). *Functional Representation and Regression of Typhoon Evolution in Western North Pacific Area.* For questions, issues, or collaborations, please feel free to open an issue in this repository.
